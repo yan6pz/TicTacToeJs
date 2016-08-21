@@ -14,15 +14,19 @@ var TicTacToe=function()
 		var minValue=-100000;
 		
 		
-        TicTacToe.SearchAlphaBeta=function (state)
+        TicTacToe.SearchAlphaBeta=function (state,nonDeterministic)
         {
             NextMoves  ={};
             var successors = GetPossiblePossitions(state, 1);
             for (var i = 0; i < successors.length; i++)
             {
                 var move = ToStringBoard(successors[i]);
-                NextMoves[move]= 6;
+				if(nonDeterministic)
+					NextMoves[move]= 0;
+				else
+					NextMoves[move]= 6;
             }
+			
             var value = MaxPlayerTurn(state, minValue, maxValue);
 
             //search for the next move with the given value

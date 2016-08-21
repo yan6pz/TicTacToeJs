@@ -1,9 +1,17 @@
 $(function ($) {
 	window.moveCount = 0;
 	var BOARD_SIZE = 3;
-	this.Players=[];
+	window.Players=[];
+	window.Players[1]=0;
+	window.Players[2]=0;
 	this.Board;
 	var dir=[[0,1,2],[3,4,5],[6,7,8]];
+	window.NonDeterministicTurn=getRandomArbitrary(0,8);
+	
+	function getRandomArbitrary(min, max) {
+		return Math.random() * (max - min) + min;
+	}
+
 	function init(){
 		TicTacToe();
 		this.Board=[];
@@ -67,14 +75,14 @@ $(function ($) {
            for(var i=0;i<BOARD_SIZE;i++){
 			   for(var j=0;j<BOARD_SIZE;j++){
 			   if(Board[i][j]!=next[i][j]){
-				   renderBot(dir[i][j]);
+				   renderBot(dir[i][j],1);
 				   return;
 			   }
 			   }
 		   }
 
     }
-	function renderBot(id){
+	function renderBot(id,player){
 		var b = new Block(id);
 		var rect = document.getElementById(id).getBoundingClientRect();
 		var coor={top:rect.top,
@@ -83,7 +91,7 @@ $(function ($) {
 				left:rect.left
 		};
 		b.move(coor);
-		Board[Math.floor(id/3)][id%3] = 1;
+		Board[Math.floor(id/3)][id%3] = player;
 	}
 	function hasWin(){
 		var end = TicTacToe.CheckCurrentBoardState(Board);
@@ -91,11 +99,11 @@ $(function ($) {
           {
             case TicTacToe.ExitValue.ComputerWins:
               beautify(1,"red");
-			  Players[1]++;
+			  window.Players[1]++;
               break;
             case  TicTacToe.ExitValue.PlayerWins:
               beautify(2,"green");
-			  Players[2]++;
+			  window.Players[2]++;
               break;
             case TicTacToe.ExitValue.NobodyWins:
 				alert("Nobody won!");
@@ -145,11 +153,21 @@ $(function ($) {
         }
 
 	function resetGame(){
-		location.reload();
+		init();
+		var canvas=document.getElementsByTagName("canvas");
+		for(var i=0;i<canvas.length;i++){
+			var context=canvas[i].getContext("2d");
+			context.clearRect(0,0,canvas[i].width,canvas[i].height);
+		}
+		$("td").css("background-color", "white");
+		if(window.moveCount%2===1){
+			var id=Math.floor(getRandomArbitrary(0,8));
+			renderBot(id,1);
+		}
 	}
 	function updateResult(){
-		$("span#result1").text(this.Players[1]);
-		$("span#result2").text(this.Players[2]);
+		$("span#result1").text(window.Players[1]);
+		$("span#result2").text(window.Players[2]);
 	}
 	init();
 	$("#reset").click(function(){
@@ -167,8 +185,8 @@ $(function ($) {
 		};
 		b.move(coor);
 		Board[Math.floor(this.id/3)][this.id%3] = 2;
-
-        var next = TicTacToe.SearchAlphaBeta(Board);
+		//bot turn
+        var next = TicTacToe.SearchAlphaBeta(Board,this.id==Math.floor(window.NonDeterministicTurn));
         if (next != null)
         {
 			updateCanvas(next);
