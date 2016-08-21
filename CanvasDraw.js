@@ -31,10 +31,8 @@ $(function ($) {
         var  ctx = this.CTX;
               if (window.moveCount++ % 2 === 1) {
                  moveO(coor.top, coor.right,coor.left,coor.bottom, width, ctx);
-                 //board[this.CurrentId%3][this.CurrentId/3] = "o";
              } else {
                  moveX(coor.top, coor.right,coor.left,coor.bottom, width, ctx);
-                 //board[this.CurrentId%3][this.CurrentId/3] = "o";
              }
     };
 
@@ -85,7 +83,7 @@ $(function ($) {
 				left:rect.left
 		};
 		b.move(coor);
-		Board[id%3][id/3] = 1;
+		Board[Math.floor(id/3)][id%3] = 1;
 	}
 	function hasWin(){
 		var end = TicTacToe.CheckCurrentBoardState(Board);
@@ -114,7 +112,7 @@ $(function ($) {
 				left:rect.left
 		};
 		b.move(coor);
-		Board[this.id%3][this.id/3] = 2;
+		Board[Math.floor(this.id/3)][this.id%3] = 2;
 
         var next = TicTacToe.SearchAlphaBeta(Board);
         if (next != null)

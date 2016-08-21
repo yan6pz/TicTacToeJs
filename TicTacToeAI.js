@@ -9,7 +9,7 @@ var TicTacToe=function()
         NotFinished :3
     };
         var BOARD_SIZE = 3;
-        var NextMoves={};
+        var NextMoves;
 		var maxValue=100000;
 		var minValue=-100000;
 		
@@ -40,7 +40,7 @@ var TicTacToe=function()
 		
         TicTacToe.SearchAlphaBeta=function (state)
         {
-            //NextMoves = new Dictionary<string, int>();
+            NextMoves  ={};
             var successors = GetPossiblePossitions(state, 1);
             for (var i = 0; i < successors.length; i++)
             {
