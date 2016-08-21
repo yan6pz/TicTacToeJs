@@ -13,30 +13,6 @@ var TicTacToe=function()
 		var maxValue=100000;
 		var minValue=-100000;
 		
-    // this.start=function ()
-        // { 
-
-            // //var tiptoe =new TicTacToe();
-            // while (this.CheckCurrentBoardState(Board) == this.ExitValue.NotFinished)
-            // {
-                // Console.WriteLine("your turn : ");
-                // Console.Write("row: ");
-                // int x = int.Parse(Console.ReadLine());
-                // Console.Write("col: ");
-                // int y = int.Parse(Console.ReadLine());
-                // //TODO: Validation of input
-                // Board[x][y] = 2;
-                // Print(Board);
-
-                // var next = this.SearchAlphaBeta(Board);
-                // if (next != null)
-                // {
-                    // Board = next;
-                    // Print(Board);
-                // }
-
-            // }  
-        // }
 		
         TicTacToe.SearchAlphaBeta=function (state)
         {

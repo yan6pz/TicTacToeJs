@@ -1,7 +1,7 @@
 $(function ($) {
 	window.moveCount = 0;
 	var BOARD_SIZE = 3;
-
+	this.Players=[];
 	this.Board;
 	var dir=[[0,1,2],[3,4,5],[6,7,8]];
 	function init(){
@@ -90,17 +90,71 @@ $(function ($) {
           switch (end)
           {
             case TicTacToe.ExitValue.ComputerWins:
-              alert("You loose!");
+              beautify(1,"red");
+			  Players[1]++;
               break;
             case  TicTacToe.ExitValue.PlayerWins:
-              alert("You win!");
+              beautify(2,"green");
+			  Players[2]++;
               break;
             case TicTacToe.ExitValue.NobodyWins:
-               alert("Equal!");
+				alert("Nobody won!");
+               resetGame();
                break;
           }
+		  updateResult();
+	}
+	function beautify(player,color){
+                for (var column = 0; column < BOARD_SIZE; column++)
+                {
+                    if (Board[0][column] == player && Board[1][column] == player
+                            && Board[2][column] == player)
+                    {
+                         $("#"+dir[0][column]).css("background-color", color);
+						$("#"+dir[1][column]).css("background-color", color);
+						$("#"+dir[2][column]).css("background-color", color);
+                    }
+                }
+
+                for (var row = 0; row < BOARD_SIZE; row++)
+                {
+                    if (Board[row][0] == player && Board[row][1] == player
+                            && Board[row][2] == player)
+                    {
+                        $("#"+dir[row][0]).css("background-color", color);
+						$("#"+dir[row][1]).css("background-color", color);
+						$("#"+dir[row][2]).css("background-color", color);
+                    }
+                }
+
+                if (Board[0][0] == player && Board[1][1] == player
+                        && Board[2][2] == player)
+                {
+                    $("#"+dir[0][0]).css("background-color", color);
+					$("#"+dir[1][1]).css("background-color", color);
+					$("#"+dir[2][2]).css("background-color", color);
+                }
+                if (Board[0][2] == player && Board[1][1] == player
+                        && Board[2][0] == player)
+                {
+                    $("#"+dir[0][2]).css("background-color", color);
+					$("#"+dir[1][1]).css("background-color", color);
+					$("#"+dir[2][0]).css("background-color", color);
+                }
+            
+        }
+
+	function resetGame(){
+		location.reload();
+	}
+	function updateResult(){
+		$("span#result1").text(this.Players[1]);
+		$("span#result2").text(this.Players[2]);
 	}
 	init();
+	$("#reset").click(function(){
+		resetGame();
+	})
   $("#board").on("click", "td", function(e) {
 	  if(TicTacToe.CheckCurrentBoardState(Board) == TicTacToe.ExitValue.NotFinished)
 	  {	  
@@ -123,6 +177,9 @@ $(function ($) {
 				hasWin();
 			}
         }
+		else{
+			hasWin();
+		}
 	}
 	else{
 		  hasWin();
